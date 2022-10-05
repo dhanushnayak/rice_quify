@@ -38,5 +38,3 @@ async def read_random_file(filename):
     return FileResponse(path)
 
 
-if __name__=='__main__':
-    uvicorn.run(app,host=0.0.0.0,port=9000)
