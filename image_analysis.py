@@ -88,9 +88,9 @@ def white_count(img):
     kl = []
     for a in cnt:
         pr = cv2.contourArea(a)
-        if pr>5: kl.append(pr)
-    qp=np.quantile(kl,0.9)
-    count = len([i for i in kl if qp<i])
+        if pr>15: kl.append(pr)
+    #qp=np.quantile(kl,0.9)
+    count = len(kl)#len([i for i in kl if qp<i])
     return count
     
 
@@ -110,7 +110,8 @@ def get_analysis(path):
         print(e,"BLUE")
     try:
         white = white_count(img_p)
+        white1,_ = get_count(img_p)
     except Exception as e:
         print(e,"WHITE")
     tol_count=blue+white
-    return {"blue":blue,"white":white,"Total":tol_count}
+    return {"blue":blue,"white":white,"Total":tol_count,"White1":white1}

@@ -13,6 +13,10 @@ app = FastAPI()
 
 version = "1.0"
 
+@app.get('/')
+def index():
+    return {"Version":version,"title":"RiceQ"}
+
 @app.post("/images/analysis/")
 async def create_upload_file(file: UploadFile = File(...)):
     global version
