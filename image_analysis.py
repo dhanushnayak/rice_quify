@@ -127,7 +127,7 @@ def get_analysis(path):
         print(e)
         return {"blue":blue,"white":white,"Total":tol_count}
     try:
-        img_p = crop_image(img)
+        img_p = img#crop_image(img)
     except Exception as e:
         print(e)
     try:
