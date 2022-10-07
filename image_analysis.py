@@ -93,9 +93,21 @@ def white_count(img):
     count = len(kl)#len([i for i in kl if qp<i])
     return count
     
+def white_count_2(img):
+    lower_white = np.array([0,0,180])
+    higher_white = np.array([255,255,255])
+    white_range = cv2.inRange(img, lower_white, higher_white)
+    (cnt, hierarchy) = cv2.findContours(white_range, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+    kl = []
+    for a in cnt:
+        pr = cv2.contourArea(a)
+        if pr>15: kl.append(pr)
+    qp=np.quantile(kl,0.9)
+    count = len([i for i in kl if qp<i])
+    return count
 
 def get_analysis(path):
-    blue, white,tol_count=0,0,0
+    blue, white,tol_count,white_2=0,0,0,0
     try: img = cv2.imread(path)
     except Exception as e:
         print(e)
@@ -111,7 +123,8 @@ def get_analysis(path):
     try:
         white = white_count(img_p)
         white1,_ = get_count(img_p)
+        white_2 = white_count_2(img_p)
     except Exception as e:
         print(e,"WHITE")
     tol_count=blue+white
-    return {"blue":blue,"white":white,"Total":tol_count,"White1":white1}
+    return {"blue":blue,"white":white,"Total":tol_count,"White1":white1,"white2":white_2,"img_shape":img.shape,"Image_Mean":img.mean()}
