@@ -106,8 +106,22 @@ def white_count_2(img):
     count = len([i for i in kl if qp<i])
     return count
 
+def new_white_count(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (31,31), 0)
+    canny = cv2.Canny(blur, 10, 50, 20)
+    dilated = cv2.dilate(canny, (21, 21), iterations=1)
+    (cnt, hierarchy) = cv2.findContours(
+        dilated.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_L1)
+    rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    ckl = []
+    for i in cnt:
+        a = cv2.contourArea(i)
+        if a>5: ckl.append(a)
+    return find_peaks(ckl)[0].shape
+
 def get_analysis(path):
-    blue, white,tol_count,white_2=0,0,0,0
+    blue, white,tol_count,white_2,white_3=0,0,0,0,0
     try: img = cv2.imread(path)
     except Exception as e:
         print(e)
@@ -124,7 +138,8 @@ def get_analysis(path):
         white = white_count(img_p)
         white1,_ = get_count(img_p)
         white_2 = white_count_2(img_p)
+        white_3 = new_white_count(img_p)
     except Exception as e:
         print(e,"WHITE")
     tol_count=blue+white
-    return {"blue":blue,"white":white,"Total":tol_count,"White1":white1,"white2":white_2,"img_shape":img.shape,"Image_Mean":img.mean()}
+    return {"blue":blue,"white":white,"Total":tol_count,"White1":white1,"white2":white_2,"Whiet3":white_3,"img_shape":img.shape,"Image_Mean":img.mean()}
