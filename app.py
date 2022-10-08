@@ -14,7 +14,7 @@ IMAGEDIR = "images_data/"
 
 app = FastAPI()
 
-version = "1.0"
+version = "1.1"
 
 @app.get('/')
 def index():
@@ -41,7 +41,7 @@ async def image_report(file: UploadFile = File(...)):
 
 @app.get("/images/{filename}")
 async def get_images(filename):
-    
+
     res = database.Get_Image(filename)[1]
     # notice you can use FileResponse now because it expects a path
     return Response(content=res, media_type="image/png")
