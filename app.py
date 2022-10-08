@@ -12,6 +12,7 @@ import datetime
 
 IMAGEDIR = "images_data/"
 
+
 app = FastAPI()
 
 version = "1.1"
@@ -27,6 +28,11 @@ async def image_report(file: UploadFile = File(...)):
     contents = await file.read()  # <-- Important!
 
     # example of how you can save the file
+    try:
+        os.path.exists(IMAGEDIR)
+    except:
+        os.makedirs(IMAGEDIR)
+        
     path = f"{IMAGEDIR}{file.filename}"
     with open(path, "wb") as f:
         f.write(contents)
