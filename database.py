@@ -12,13 +12,13 @@ def convertToBinaryData(filename):
     return blobData
  
 dbpath =  os.path.join(os.path.dirname(__file__),'assets.db')
-sqliteConnection = sqlite3.connect(dbpath,check_same_thread=False)
 
   
 def insertBLOB(name, photo):
     res=False
     global sqliteConnection
     try:
+        sqliteConnection = sqlite3.connect(dbpath,check_same_thread=False)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
           
@@ -52,8 +52,8 @@ def insertBLOB(name, photo):
  
 def Get_Image(name):
     res=(0,0)
-    global sqliteConnection
     try:
+        sqliteConnection = sqlite3.connect(dbpath,check_same_thread=False)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
           
@@ -79,8 +79,8 @@ def Get_Image(name):
 
 def get_images_name():
     names = []
-    global sqliteConnection
     try:
+        sqliteConnection = sqlite3.connect(dbpath,check_same_thread=False)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
           

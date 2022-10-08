@@ -50,7 +50,7 @@ async def image_report(file: UploadFile = File(...)):
             os.remove(path)
             print("INSERTED DELETED FROM TEMP")
             break
-        
+
     
     return {**{"filename": file.filename},**data,"version":version}
 
@@ -59,6 +59,8 @@ async def image_report(file: UploadFile = File(...)):
 async def get_images(filename):
 
     res = database.Get_Image(filename)[1]
+    if res==0:
+        return {"Fetching Failed"}
     # notice you can use FileResponse now because it expects a path
     return Response(content=res, media_type="image/png")
 
