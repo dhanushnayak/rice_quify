@@ -183,8 +183,8 @@ def get_analysis(path):
         white = white_count(img_p)
         white1,_ = get_count(img_p)
         white_2 = white_count_2(img_p)
-        white_3 = new_white_count(img_p)
+        white_3 = new_white_count(img_p)[0]
     except Exception as e:
         print(e,"WHITE")
     tol_count=blue+white
-    return {"blue":blue,"blue1":blue1,"white":white,"Total":tol_count,"White1":white1,"white2":white_2,"Whiet3":white_3,"img_shape":img.shape,"Image_Mean":img.mean()}
+    return {"blue":blue,"blue1":blue1,"white":white,"Total":tol_count,"white1":white1,"white2":white_2,"white3":white_3,"img_shape":img.shape,"Image_Mean":img.mean()}
