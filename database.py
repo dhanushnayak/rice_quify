@@ -12,7 +12,7 @@ def convertToBinaryData(filename):
     return blobData
  
 dbpath =  os.path.join(os.path.dirname(__file__),'assets.db')
-sqliteConnection = sqlite3.connect(dbpath)
+sqliteConnection = sqlite3.connect(dbpath,check_same_thread=False)
 
   
 def insertBLOB(name, photo):
@@ -85,9 +85,9 @@ def get_images_name():
         print("Connected to SQLite")
           
         # insert query
-        sqlite_extract_blob_query = """SELECT * FROM images"""
+        sqlite_extract_query = """SELECT * FROM images"""
 
-        cursor.execute(sqlite_extract_blob_query)
+        cursor.execute(sqlite_extract_query)
         res = cursor.fetchall()
         for img in res: names.append(img[0])
 
@@ -98,9 +98,6 @@ def get_images_name():
     except sqlite3.Error as error:
         print("Failed to fetch filenames data into sqlite table", error)
       
-    finally:
-        if sqliteConnection:
-            sqliteConnection.close()
-            print("the sqlite connection is closed")
+
     return names
     

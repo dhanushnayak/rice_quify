@@ -3,3 +3,5 @@ env
 images_data
 
 __pycache__
+
+*.pyc
