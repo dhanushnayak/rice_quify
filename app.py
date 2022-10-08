@@ -8,7 +8,7 @@ import uvicorn
 import database
 from image_analysis import get_analysis
 import datetime
-
+import time
 
 IMAGEDIR = "images_data/"
 try:
@@ -43,11 +43,15 @@ async def image_report(file: UploadFile = File(...)):
     with open(path, "wb") as f:
         f.write(contents)
     data = get_analysis(path)
-    if database.insertBLOB(file.filename,path):
-        os.remove(path)
-        print("INSERTED DELETED FROM TEMP")
-    else:
-        pass
+    while True:
+        res = database.insertBLOB(file.filename,path)
+        time.sleep(0.2)
+        if res==True:
+            os.remove(path)
+            print("INSERTED DELETED FROM TEMP")
+            break
+        
+    
     return {**{"filename": file.filename},**data,"version":version}
 
 
