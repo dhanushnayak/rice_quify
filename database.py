@@ -92,11 +92,11 @@ def get_images_name():
         for img in res: names.append(img[0])
 
         sqliteConnection.commit()
-        print("GOT all Images")
+        print("GOT Images filename all *")
         cursor.close()
   
     except sqlite3.Error as error:
-        print("Failed to fetch blob data into sqlite table", error)
+        print("Failed to fetch filenames data into sqlite table", error)
       
     finally:
         if sqliteConnection:
