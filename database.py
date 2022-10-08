@@ -87,7 +87,7 @@ def get_images_name():
         # insert query
         sqlite_extract_blob_query = """SELECT * FROM images"""
 
-        cursor.execute(sqlite_extract_blob_query, (name,))
+        cursor.execute(sqlite_extract_blob_query)
         res = cursor.fetchall()
         for img in res: names.append(img[0])
 
