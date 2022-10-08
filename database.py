@@ -92,7 +92,7 @@ def get_images_name():
         for img in res: names.append(img[0])
 
         sqliteConnection.commit()
-        print("Fetched Image Names")
+        print("GOT all Images")
         cursor.close()
   
     except sqlite3.Error as error:
