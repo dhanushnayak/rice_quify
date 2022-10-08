@@ -25,6 +25,12 @@ version = "1.1"
 def index():
     return {"Version":version,"title":"RiceQ"}
 
+
+@app.get('/images/name')
+def get_images_name():
+    names = database.get_images_name()
+    return {"filename":names}
+
 @app.post("/images/analysis/")
 async def image_report(file: UploadFile = File(...)):
     global version

@@ -76,3 +76,31 @@ def Get_Image(name):
             print("the sqlite connection is closed")
     return res
     
+
+def get_images_name():
+    names = []
+    global sqliteConnection
+    try:
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+          
+        # insert query
+        sqlite_extract_blob_query = """SELECT * FROM images"""
+
+        cursor.execute(sqlite_extract_blob_query, (name,))
+        res = cursor.fetchall()
+        for img in res: names.append(img[0])
+
+        sqliteConnection.commit()
+        print("Fetched Image Names")
+        cursor.close()
+  
+    except sqlite3.Error as error:
+        print("Failed to fetch blob data into sqlite table", error)
+      
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
+    return names
+    
