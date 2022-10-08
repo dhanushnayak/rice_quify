@@ -1,11 +1,14 @@
-from fastapi import FastAPI, File, UploadFile
+import base64
+from fastapi import FastAPI, File, UploadFile,Response
 from fastapi.responses import FileResponse
 import os
 from random import randint
 import uuid
 import uvicorn
-
+import database
 from image_analysis import get_analysis
+import datetime
+
 
 IMAGEDIR = "images_data/"
 
@@ -18,9 +21,9 @@ def index():
     return {"Version":version,"title":"RiceQ"}
 
 @app.post("/images/analysis/")
-async def create_upload_file(file: UploadFile = File(...)):
+async def image_report(file: UploadFile = File(...)):
     global version
-    file.filename = f"{uuid.uuid4()}.jpg"
+    file.filename = f"PIC_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')}.jpg"
     contents = await file.read()  # <-- Important!
 
     # example of how you can save the file
@@ -28,17 +31,19 @@ async def create_upload_file(file: UploadFile = File(...)):
     with open(path, "wb") as f:
         f.write(contents)
     data = get_analysis(path)
+    if database.insertBLOB(file.filename,path):
+        os.remove(path)
+        print("INSERTED DELETED FROM TEMP")
+    else:
+        pass
     return {**{"filename": file.filename},**data,"version":version}
 
 
 @app.get("/images/{filename}")
-async def read_random_file(filename):
-
-    # get a random file from the image directory
-
-    path = f"{IMAGEDIR}{filename}"
+async def get_images(filename):
     
+    res = database.Get_Image(filename)[1]
     # notice you can use FileResponse now because it expects a path
-    return FileResponse(path)
+    return Response(content=res, media_type="image/png")
 
 
